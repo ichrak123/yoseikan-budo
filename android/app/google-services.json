@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "177465605710",
+    "project_id": "yoseikan-bc82e",
+    "storage_bucket": "yoseikan-bc82e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:177465605710:android:4a55119ba7394dccb8cd1f",
+        "android_client_info": {
+          "package_name": "com.example.yoseikanbudo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "177465605710-2fc7r29cc0sk55j1dmi7ieln59g22k6t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALYpQxvZBT60w-DT7IkpxhCPbJTk_ckDI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "177465605710-2fc7r29cc0sk55j1dmi7ieln59g22k6t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
