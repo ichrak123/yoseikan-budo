@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
           // is not restarted.
           primarySwatch: Colors.blue,
         ),
-        home: Welcome(),
+        home: LogIn(),
         routes: {
           'Competitions': (context) {
             return Homepage();

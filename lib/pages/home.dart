@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:yoseikanbudo/component/bottomnavbar.dart';
@@ -64,9 +66,13 @@ class _HomepageState extends State<Homepage> {
   bool isSeen = true;
   var total;
   Future getTotalUnseenNotification() async {
+    var data = {
+      "clubname": widget.usernameone,
+      "clubnametow": widget.usernameone
+    };
     var url =
         "http://192.168.1.4:80/federationtunisienne/unseennotification.php";
-    var response = await http.get(url);
+    var response = await http.post(url, body: data);
     if (response.statusCode == 200) {
       setState(() {
         total = response.body;
@@ -106,8 +112,9 @@ class _HomepageState extends State<Homepage> {
                       Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      unseenNotificationPage()))
+                                  builder: (context) => unseenNotificationPage(
+                                        usename: id,
+                                      )))
                           .whenComplete(() => getTotalUnseenNotification());
                       debugPrint("seen");
                     },
@@ -148,7 +155,7 @@ class _HomepageState extends State<Homepage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  child: Text(" "),
+                  child: Text("  "),
                 ),
                 Container(
                   child: Text("Choisir une categorie",
@@ -218,7 +225,7 @@ class _HomepageState extends State<Homepage> {
                           } else {
                             return CircularProgressIndicator();
                           }
-                        }))
+                        })),
               ],
             ),
           ))

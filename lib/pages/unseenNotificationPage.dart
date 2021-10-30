@@ -45,11 +45,10 @@ class _unseenNotificationPageState extends State<unseenNotificationPage> {
 
   List allUnseenNotification = [];
   Future getUnseenNotification() async {
+    var data = {"clubname": widget.usename, "clubnametow": widget.usename};
     var url =
         "http://192.168.1.4:80/federationtunisienne/selectunseennotification.php";
-    var response = await http.get(
-      url,
-    );
+    var response = await http.post(url, body: data);
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
       setState(() {

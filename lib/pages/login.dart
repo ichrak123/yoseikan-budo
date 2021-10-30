@@ -154,7 +154,11 @@ class _LogInState extends State<LogIn> {
         );
         print(responsebody['username']);
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Test()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => Homepage(
+                      usernameone: id,
+                    )));
       } else {
         print("login failed");
         showdialogall(context, "wrong", "email or password wrong");

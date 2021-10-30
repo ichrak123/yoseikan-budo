@@ -95,38 +95,99 @@ class _LicenceState extends State<Licence> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("dmande licence"),
-        ),
-        body: Stepper(
-          steps: _stepper(),
-          physics: ClampingScrollPhysics(),
-          currentStep: this._currentStep,
-          onStepTapped: (step) {
-            setState(() {
-              this._currentStep = step;
-            });
-          },
-          onStepContinue: () {
-            setState(() {
-              if (this._currentStep < this._stepper().length - 1) {
-                this._currentStep = this._currentStep + 1;
-              } else {
-                addLicence();
-              }
-            });
-          },
-          onStepCancel: () {
-            setState(() {
-              if (this._currentStep > 0) {
-                this._currentStep = this._currentStep - 1;
-              } else {
-                this._currentStep = 0;
-              }
-            });
-          },
-        ));
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+          appBar: AppBar(
+            bottom: TabBar(
+              indicatorSize: TabBarIndicatorSize.label,
+              unselectedLabelColor: Color(0xFFF57F17),
+              indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(40),
+                color: Color(0xFFF57F17),
+              ),
+              tabs: [
+                Tab(
+                  child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
+                          border:
+                              Border.all(color: Color(0xFFF57F17), width: 1)),
+                      child: Align(child: Text("Joueur"))),
+                ),
+                Tab(
+                  child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          border:
+                              Border.all(color: Color(0xFFF57F17), width: 1)),
+                      child: Align(child: Text("Coach"))),
+                ),
+              ],
+            ),
+            title: Text("demande licence"),
+          ),
+          body: TabBarView(
+            children: [
+              Stepper(
+                steps: _stepper(),
+                physics: ClampingScrollPhysics(),
+                currentStep: this._currentStep,
+                onStepTapped: (step) {
+                  setState(() {
+                    this._currentStep = step;
+                  });
+                },
+                onStepContinue: () {
+                  setState(() {
+                    if (this._currentStep < this._stepper().length - 1) {
+                      this._currentStep = this._currentStep + 1;
+                    } else {
+                      addLicence();
+                    }
+                  });
+                },
+                onStepCancel: () {
+                  setState(() {
+                    if (this._currentStep > 0) {
+                      this._currentStep = this._currentStep - 1;
+                    } else {
+                      this._currentStep = 0;
+                    }
+                  });
+                },
+              ),
+              Stepper(
+                steps: _stepper(),
+                physics: ClampingScrollPhysics(),
+                currentStep: this._currentStep,
+                onStepTapped: (step) {
+                  setState(() {
+                    this._currentStep = step;
+                  });
+                },
+                onStepContinue: () {
+                  setState(() {
+                    if (this._currentStep < this._stepper().length - 1) {
+                      this._currentStep = this._currentStep + 1;
+                    } else {
+                      addLicence();
+                    }
+                  });
+                },
+                onStepCancel: () {
+                  setState(() {
+                    if (this._currentStep > 0) {
+                      this._currentStep = this._currentStep - 1;
+                    } else {
+                      this._currentStep = 0;
+                    }
+                  });
+                },
+              ),
+            ],
+          )),
+    );
   }
 
   List<Step> _stepper() {
