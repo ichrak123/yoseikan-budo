@@ -22,7 +22,7 @@ class _DrawerMenujoueurState extends State<DrawerMenujoueur> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     username = preferences.getString("username");
     club = preferences.getString("club");
-    id = preferences.getString("licence_id");
+    id = preferences.getString("joueur_id");
     nomprenom = preferences.getString("nomprenom");
     image = preferences.getString("image");
 
@@ -82,43 +82,6 @@ class _DrawerMenujoueurState extends State<DrawerMenujoueur> {
                           builder: (context) =>
                               JoueurProfile(name: nomprenom)));
                 },
-              )
-            : SizedBox(
-                height: 0,
-              ),
-        isSignIn
-            ? ListTile(
-                title: Text('Mes Matchs '),
-                leading: Icon(Icons.person),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MesMatchsJoueur(
-                                username: nomprenom,
-                              )));
-                },
-              )
-            : SizedBox(
-                height: 0,
-              ),
-        Divider(),
-        isSignIn
-            ? ListTile(
-                title: Text('Examen de grade'),
-                leading: Icon(Icons.home),
-                onTap: () {
-                  Navigator.of(context).pushNamed('demandelicence');
-                },
-              )
-            : SizedBox(
-                height: 0,
-              ),
-        isSignIn
-            ? ListTile(
-                title: Text('Joueurs'),
-                leading: Icon(Icons.play_arrow),
-                onTap: () {},
               )
             : SizedBox(
                 height: 0,

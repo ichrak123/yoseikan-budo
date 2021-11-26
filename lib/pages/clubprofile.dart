@@ -61,27 +61,9 @@ class _ClubProfileState extends State<ClubProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Acceuil',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.info),
-            label: 'A propos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.contact_mail),
-            label: 'Contact',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-      ),
       appBar: AppBar(
         title: Text(
-          "Mon Profile",
+          "Profile",
           style: TextStyle(
             color: Colors.black,
           ),

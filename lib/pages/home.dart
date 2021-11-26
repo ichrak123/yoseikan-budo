@@ -17,6 +17,8 @@ import 'package:yoseikanbudo/pages/unseenNotificationPage.dart';
 
 import 'demandelicence.dart';
 import 'mesmatchs.dart';
+import 'ourcoachs.dart';
+import 'ourplayers.dart';
 
 class Homepage extends StatefulWidget {
   final usernameone;
@@ -93,15 +95,8 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    Future getCategory() async {
-      var url = "http://192.168.1.4:80/federationtunisienne/getcategories.php";
-
-      var response = await http.get(url);
-      var responsebody = jsonDecode(response.body);
-      return responsebody;
-    }
-
     return Scaffold(
+      bottomNavigationBar: BottomNavBar(),
       appBar: AppBar(
         actions: [
           isSeen
@@ -121,7 +116,7 @@ class _HomepageState extends State<Homepage> {
                     child: Badge(
                       badgeContent:
                           Text('$total', style: TextStyle(color: Colors.white)),
-                      child: Icon(Icons.notifications_active),
+                      child: Icon(Icons.notifications_active, size: 30),
                     ),
                   ),
                 )
@@ -132,14 +127,14 @@ class _HomepageState extends State<Homepage> {
                     child: Badge(
                       badgeContent:
                           Text('0', style: TextStyle(color: Colors.white)),
-                      child: Icon(Icons.notifications_none),
+                      child: Icon(Icons.notifications_none, size: 30),
                     ),
                   ),
                 )
         ],
         title: Text(''),
         elevation: 0,
-        backgroundColor: Color(0xFFE0F2F1),
+        backgroundColor: Color(0xFF80DEEA),
       ),
       drawer: DrawerMenu(),
       resizeToAvoidBottomInset: false,
@@ -147,7 +142,9 @@ class _HomepageState extends State<Homepage> {
         children: [
           Container(
               height: size.height * .25,
-              decoration: BoxDecoration(color: Color(0xFFE0F2F1))),
+              decoration: BoxDecoration(
+                color: Color(0xFF80DEEA),
+              )),
           SafeArea(
               child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
@@ -155,77 +152,94 @@ class _HomepageState extends State<Homepage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  child: Text("  "),
-                ),
-                Container(
-                  child: Text("Choisir une categorie",
-                      style: TextStyle(
-                          color: Color(0xFF263238),
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold)),
-                ),
-                Container(
-                  margin: EdgeInsets.only(right: 15),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      showSearch(
-                          context: context,
-                          delegate: SearchData(list: listsearch));
-                    },
                     child: Row(
-                      children: [
-                        IconButton(
-                          color: Colors.grey,
-                          icon: Icon(Icons.search),
-                          onPressed: () {
-                            showSearch(
-                                context: context,
-                                delegate: SearchData(list: listsearch));
-                          },
-                        ),
-                        Text(
-                          "Rechercher Competition",
-                          style: TextStyle(color: Colors.grey),
-                        )
-                      ],
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0),
-                      ),
-                    ),
-                  ),
-                ),
+                  children: [
+                    Text("Bienvenue ",
+                        style: TextStyle(
+                            color: Color(0xFF263238),
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold)),
+                    isSignIn
+                        ? Text(clubresponsable != null ? clubresponsable : "",
+                            style: TextStyle(
+                                color: Color(0xFF263238),
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold))
+                        : Text(""),
+                  ],
+                )),
+                Container(
+                    child: Row(
+                  children: [
+                    Text("Club :",
+                        style: TextStyle(
+                            color: Color(0xFF263238),
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold)),
+                    isSignIn
+                        ? Text(nomclub != null ? nomclub : "",
+                            style: TextStyle(
+                                color: Color(0xFF263238),
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold))
+                        : Text(""),
+                  ],
+                )),
                 SizedBox(
                   height: 20,
                 ),
                 Expanded(
-                    child: FutureBuilder(
-                        future: getCategory(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return GridView.builder(
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: .85,
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 20,
-                                ),
-                                itemCount: snapshot.data.length,
-                                itemBuilder: (context, index) {
-                                  return categorycard(
-                                    imagesrc:
-                                        'http://192.168.1.4:80/federationtunisienne/uploads/${snapshot.data[index]['imagesrc']}',
-                                    title: snapshot.data[index]['title'],
-                                    id: snapshot.data[index]['cat_id'],
-                                  );
-                                });
-                          } else {
-                            return CircularProgressIndicator();
-                          }
-                        })),
+                    child: GridView.count(
+                  crossAxisCount: 2,
+                  childAspectRatio: .85,
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20,
+                  children: [
+                    categorycard(
+                      title: "Nos matchs",
+                      imagesrc: 'assets/images/matches.jpg',
+                      press: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MesMatchs(
+                                      username: id,
+                                    )));
+                      },
+                    ),
+                    categorycard(
+                      title: "Nos Joueurs",
+                      imagesrc: 'assets/images/joueur.jpg',
+                      press: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OurPlayers(
+                                      clubname: id,
+                                    )));
+                      },
+                    ),
+                    categorycard(
+                      title: "Nos Coachs",
+                      imagesrc: 'assets/images/coach.jpg',
+                      press: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OurCoachs(
+                                      clubname: id,
+                                    )));
+                      },
+                    ),
+                    categorycard(
+                      title: "Demander licence",
+                      imagesrc: 'assets/images/add.jpg',
+                      press: () {
+                        Navigator.of(context).pushNamed('demandelicence');
+                      },
+                    ),
+                  ],
+                )),
               ],
             ),
           ))
@@ -239,12 +253,14 @@ class categorycard extends StatelessWidget {
   final String imagesrc;
   final String title;
   final id;
+  final Function press;
 
   const categorycard({
     Key key,
     this.imagesrc,
     this.title,
     this.id,
+    this.press,
   }) : super(key: key);
 
   @override
@@ -257,31 +273,28 @@ class categorycard extends StatelessWidget {
           boxShadow: [
             BoxShadow(
                 offset: Offset(0, 17),
-                blurRadius: 17,
-                spreadRadius: -23,
+                blurRadius: 20,
+                spreadRadius: -5,
                 color: Color(0xFFE6E6E6))
           ]),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Adounat(
-                          categoryname: id,
-                          titlename: title,
-                        )));
-          },
+          onTap: press,
           child: Column(
             children: [
-              Image.network(imagesrc, height: 90, width: 90),
+              Image.asset(
+                imagesrc,
+                width: 90,
+                height: 90,
+                fit: BoxFit.cover,
+              ),
               SizedBox(height: 10),
               Text(title,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Color(0xFF263238),
-                      fontSize: 17,
+                      fontSize: 15,
                       fontWeight: FontWeight.bold)),
             ],
           ),

@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:yoseikanbudo/pages/joueur/homejoueur.dart';
 
 class LoginJoueur extends StatefulWidget {
   const LoginJoueur({Key key}) : super(key: key);
@@ -40,6 +41,34 @@ showdialogall(context, String mytitle, String mycontent) {
 }
 
 class _LoginJoueurState extends State<LoginJoueur> {
+  var username;
+  var club;
+  var id;
+  var nomprenom;
+  var image;
+
+  bool isSignIn = false;
+  getPref() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    username = preferences.getString("username");
+    club = preferences.getString("club");
+    id = preferences.getString("joueur_id");
+    nomprenom = preferences.getString("nomprenom");
+    image = preferences.getString("image");
+
+    if (username != null) {
+      setState(() {
+        username = preferences.getString("username");
+        id = preferences.getString("joueur_id");
+        club = preferences.getString("club");
+        nomprenom = preferences.getString("nomprenom");
+        image = preferences.getString("image");
+
+        isSignIn = true;
+      });
+    }
+  }
+
   bool isLoading = false;
   TextEditingController passwordcontroller = new TextEditingController();
   TextEditingController usernamecontroller = new TextEditingController();
@@ -55,17 +84,15 @@ class _LoginJoueurState extends State<LoginJoueur> {
       String poid,
       String grade,
       String club,
-      String apropos,
       String image) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.setString("licence_id", id);
+    preferences.setString("joueur_id", id);
     preferences.setString("nomprenom", nomprenom);
     preferences.setString("adresse", adresse);
     preferences.setString("genre", genre);
     preferences.setString("categorie", categorie);
     preferences.setString("username", username);
 
-    preferences.setString("apropos", apropos);
     preferences.setString("poid", poid);
     preferences.setString("grade", grade);
     preferences.setString("club", club);
@@ -76,7 +103,6 @@ class _LoginJoueurState extends State<LoginJoueur> {
     print(preferences.getString("nombreentraineur"));
     print(preferences.getString("nombrejoueur"));
     print(preferences.getString("email"));
-    print(preferences.getString("apropos"));
   }
 
   String validglobal(String val) {
@@ -109,13 +135,13 @@ class _LoginJoueurState extends State<LoginJoueur> {
         "username": usernamecontroller.text,
         "password": passwordcontroller.text
       };
-      var url = "http://10.0.2.2:80/federationtunisienne/loginjoueur.php";
+      var url = "http://192.168.1.4:80/federationtunisienne/loginjoueur.php";
       var response = await http.post(url, body: data);
       var responsebody = jsonDecode(response.body);
       if (responsebody['status'] == "sucsses") {
         savePref(
           responsebody['username'],
-          responsebody['licence_id'],
+          responsebody['joueur_id'],
           responsebody['nomprenom'],
           responsebody['adresse'],
           responsebody['genre'],
@@ -124,10 +150,12 @@ class _LoginJoueurState extends State<LoginJoueur> {
           responsebody['grade'],
           responsebody['club'],
           responsebody['image'],
-          responsebody['apropos'],
         );
         print(responsebody['username']);
-        Navigator.of(context).pushNamed("homejoueur");
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => HomeJoueur(usernameone: id)));
       } else {
         print("login failed");
         showdialogall(context, "wrong", "email or password wrong");
@@ -148,6 +176,12 @@ class _LoginJoueurState extends State<LoginJoueur> {
         hidePassword = true;
       });
     }
+  }
+
+  @override
+  void initState() {
+    getPref();
+    super.initState();
   }
 
   @override

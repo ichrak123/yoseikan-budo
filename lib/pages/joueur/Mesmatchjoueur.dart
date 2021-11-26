@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:yoseikanbudo/pages/rankingclub.dart';
+
 class MesMatchsJoueur extends StatefulWidget {
   final username;
 
@@ -12,11 +14,27 @@ class MesMatchsJoueur extends StatefulWidget {
 }
 
 class _MesMatchsJoueurState extends State<MesMatchsJoueur> {
-  Future getMesMatch() async {
-    var url = "http://10.0.2.2:80/federationtunisienne/gemesmatchjoueurs.php";
+  String somme, sommeone;
+  Future getMesMatchTermine() async {
+    var url =
+        "http://192.168.1.4:80/federationtunisienne/gemesmatchjoueurs.php";
     var data = {
-      "joueurname": widget.username,
-      "joueurnametow": widget.username
+      "nomrouge": widget.username,
+      "nombleu": widget.username,
+      "typeresultat": "Gagne par Hantei",
+      "typeresultattow": "Gagne par Points"
+    };
+    var response = await http.post(url, body: data);
+    var responsebody = jsonDecode(response.body);
+    return responsebody;
+  }
+
+  Future getMesMatchAvenir() async {
+    var url = "http://192.168.1.4:80/federationtunisienne/progmatchjoueur.php";
+    var data = {
+      "nomrouge": widget.username,
+      "nombleu": widget.username,
+      "status": " "
     };
     var response = await http.post(url, body: data);
     var responsebody = jsonDecode(response.body);
@@ -25,151 +43,422 @@ class _MesMatchsJoueurState extends State<MesMatchsJoueur> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Mes matchs"),
-        ),
-        body: Container(
-            child: FutureBuilder(
-                future: getMesMatch(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (context, i) {
-                          return MeMatchList(
-                            joueurone: snapshot.data[i]['name_joueur_one'],
-                            joueurtow: snapshot.data[i]['name_joueur_tow'],
-                            scoreone: snapshot.data[i]['score_one'],
-                            scoretow: snapshot.data[i]['score_tow'],
-                            clubone: snapshot.data[i]['club_one'],
-                            clubtow: snapshot.data[i]['club_tow'],
-                            imageplayerone:
-                                'http://10.0.2.2:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['imageone']}',
-                            imageplayertow:
-                                'http://10.0.2.2:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['imagetow']}',
-                            competitionname: snapshot.data[i]['name_comp'],
-                            date: snapshot.data[i]['date'],
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(150.0),
+              child: AppBar(
+                elevation: 0,
+                backgroundColor: Colors.white,
+                title: Text(
+                  "mes matchs",
+                  style: TextStyle(color: Colors.black),
+                ),
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.arrow_back),
+                  color: Colors.black,
+                ),
+                bottom: TabBar(
+                  indicatorSize: TabBarIndicatorSize.label,
+                  unselectedLabelColor: Color(0xFFF57F17),
+                  indicator: BoxDecoration(
+                    borderRadius: BorderRadius.circular(40),
+                    color: Color(0xFFF57F17),
+                  ),
+                  tabs: [
+                    Tab(
+                      child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(40),
+                              border: Border.all(
+                                  color: Color(0xFFF57F17), width: 1)),
+                          child: Align(child: Text("terminé"))),
+                    ),
+                    Tab(
+                      child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              border: Border.all(
+                                  color: Color(0xFFF57F17), width: 1)),
+                          child: Align(child: Text("a venir"))),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            body: TabBarView(children: [
+              Container(
+                  child: FutureBuilder(
+                      future: getMesMatchTermine(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (context, i) {
+                                return MeMatchList(
+                                  joueurone: snapshot.data[i]['x'],
+                                  joueurtow: snapshot.data[i]['y'],
+                                  clubone: snapshot.data[i]['f'],
+                                  clubtowtow: snapshot.data[i]['k'],
+                                  scoreone: snapshot.data[i]['somme'],
+                                  scoretow: snapshot.data[i]['sommeone'],
+                                  resultat: snapshot.data[i]['vainqueur'],
+                                  typeresult: snapshot.data[i]['type_resultat'],
+                                  competition: snapshot.data[i]['name_comp'],
+                                  groupe: snapshot.data[i]['nomgroupe'],
+                                  categorie: snapshot.data[i]['cat_name'],
+                                  date: snapshot.data[i]['date'],
+                                  ptone: snapshot.data[i]['ptone'],
+                                  moy: snapshot.data[i]['moy'],
+                                  santion: snapshot.data[i]['santion'],
+                                  technique: snapshot.data[i]['score'],
+                                  pt: snapshot.data[i]['pt'],
+                                  moyone: snapshot.data[i]['moyone'],
+                                  santionone: snapshot.data[i]['santionone'],
+                                  lieu: snapshot.data[i]['lieu'],
+                                  tourname: snapshot.data[i]['tour_name'],
+                                  score: snapshot.data[i]['scoreone'],
+                                  imageplayertow:
+                                      'http://192.168.1.4:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['h']}',
+                                  imageplayerone:
+                                      'http://192.168.1.4:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['i']}',
+                                );
+                              });
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      })),
+              Container(
+                  child: FutureBuilder(
+                      future: getMesMatchAvenir(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (context, i) {
+                                return MesMatchListTow(
+                                  joueurone: snapshot.data[i]['x'],
+                                  joueurtow: snapshot.data[i]['y'],
+                                  clubone: snapshot.data[i]['f'],
+                                  clubtowtow: snapshot.data[i]['k'],
+                                  competition: snapshot.data[i]['name_comp'],
+                                  categorie: snapshot.data[i]['cat_name'],
+                                  date: snapshot.data[i]['date'],
+                                  groupe: snapshot.data[i]['nomgroupe'],
+                                  tourname: snapshot.data[i]['tour_name'],
+                                  lieu: snapshot.data[i]['lieu'],
+                                  imageplayertow:
+                                      'http://192.168.1.4:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['h']}',
+                                  imageplayerone:
+                                      'http://192.168.1.4:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['i']}',
+                                );
+                              });
+                        } else {
+                          return Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Aucun match programmé",
+                              textAlign: TextAlign.center,
+                            ),
                           );
-                        });
-                  } else {
-                    return CircularProgressIndicator();
-                  }
-                })));
+                        }
+                      })),
+            ])));
   }
 }
 
 class MeMatchList extends StatelessWidget {
+  final groupe;
+  final competition;
+  final categorie;
   final joueurone;
   final joueurtow;
   final clubone;
-  final clubtow;
+  final clubtowtow;
   final scoreone;
   final scoretow;
-  final imageplayerone;
-  final imageplayertow;
-  final competitionname;
+  final resultat;
   final date;
-  const MeMatchList(
-      {Key key,
-      this.joueurone,
-      this.joueurtow,
-      this.clubone,
-      this.clubtow,
-      this.scoreone,
-      this.scoretow,
-      this.imageplayerone,
-      this.imageplayertow,
-      this.competitionname,
-      this.date})
-      : super(key: key);
+  final typeresult;
+  final imageplayertow;
+  final imageplayerone;
+  final score;
+  final pt;
+  final moy;
+  final santion;
+  final technique;
+  final ptone;
+  final moyone;
+  final santionone;
+  final lieu;
+  final tourname;
+  final arbitrename;
+
+  const MeMatchList({
+    Key key,
+    this.joueurone,
+    this.joueurtow,
+    this.clubone,
+    this.clubtowtow,
+    this.scoreone,
+    this.scoretow,
+    this.resultat,
+    this.typeresult,
+    this.imageplayertow,
+    this.imageplayerone,
+    this.competition,
+    this.groupe,
+    this.categorie,
+    this.date,
+    this.score,
+    this.pt,
+    this.moy,
+    this.santion,
+    this.technique,
+    this.ptone,
+    this.moyone,
+    this.santionone,
+    this.lieu,
+    this.tourname,
+    this.arbitrename,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(right: 5, left: 5, top: 20),
-      height: 240,
-      width: 100,
-      child: Column(children: [
-        Container(
-          padding: EdgeInsets.only(left: 15),
-          child: ListTile(
-            title: Text(
-              competitionname,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            trailing: Text(date),
+        child: Column(
+      children: [
+        ListTile(
+          title: Text(
+            competition,
           ),
-        ),
-        Card(
-          child: Expanded(
-              child: Container(
-                  child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+          subtitle: Row(
             children: [
-              Container(
-                margin: EdgeInsets.only(top: 10),
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(imageplayerone),
-                      radius: 30,
-                    ),
-                    Text(
-                      joueurone,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    Text(clubone)
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: 40,
-              ),
-              Text(
-                scoreone,
-                style: TextStyle(fontSize: 50),
-              ),
-              Text(
-                " ",
-                style: TextStyle(fontSize: 50),
-              ),
-              Text(
-                ":",
-                style: TextStyle(fontSize: 50),
-              ),
-              Text(
-                " ",
-                style: TextStyle(fontSize: 50),
-              ),
-              Text(
-                scoretow,
-                style: TextStyle(fontSize: 50),
-              ),
+              Text(groupe),
               SizedBox(
                 width: 10,
               ),
-              Container(
-                margin: EdgeInsets.only(top: 10),
-                child: Column(
+              Text(tourname)
+            ],
+          ),
+          trailing: Text(
+            date,
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return MobileDetails(
+                arbitrename_d: arbitrename,
+                categorie_d: categorie,
+                clubtowtow_d: clubtowtow,
+                clubone_d: clubone,
+                competition_d: competition,
+                resultat_d: resultat,
+                technique_d: technique,
+                moy_d: moy,
+                tourname_d: tourname,
+                typeresult_d: typeresult,
+                imageplayerone_d: imageplayerone,
+                pt_d: pt,
+                ptone_d: ptone,
+                moyone_d: moyone,
+                imageplayertow_d: imageplayertow,
+                santion_d: santion,
+                santionone_d: santionone,
+                score_d: score,
+                scoretow_d: scoretow,
+                date_d: date,
+                groupe_d: groupe,
+                joueurone_d: joueurone,
+                joueurtow_d: joueurtow,
+                lieu_d: lieu,
+                scoreone_d: scoreone,
+              );
+            }));
+          },
+          child: Card(
+            child: Expanded(
+                child: Container(
+                    child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: Column(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(imageplayerone),
+                        radius: 30,
+                      ),
+                      Text(joueurone, style: TextStyle(fontSize: 18)),
+                      Text(clubone),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(scoreone),
+                SizedBox(
+                  width: 40,
+                ),
+                Column(
                   children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(imageplayertow),
-                      radius: 30,
+                    Row(
+                      children: [
+                        Text(int.parse(scoreone) > int.parse(scoretow)
+                            ? "vainqueur : AKA"
+                            : "vainqueur : AO"),
+                      ],
                     ),
                     Text(
-                      joueurtow,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    Text(clubtow)
+                      typeresult,
+                      style: TextStyle(fontSize: 13),
+                    )
                   ],
                 ),
-              ),
-            ],
-          ))),
+                SizedBox(
+                  width: 40,
+                ),
+                Text(scoretow),
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: Column(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(imageplayertow),
+                        radius: 30,
+                      ),
+                      Text(
+                        joueurtow,
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Text(clubtowtow)
+                    ],
+                  ),
+                ),
+              ],
+            ))),
+          ),
         ),
-      ]),
-    );
+      ],
+    ));
   }
 }
+
+class MesMatchListTow extends StatelessWidget {
+  final groupe;
+  final competition;
+  final categorie;
+  final joueurone;
+  final joueurtow;
+  final clubone;
+  final clubtowtow;
+  final lieu;
+  final date;
+  final tourname;
+  final imageplayertow;
+  final imageplayerone;
+
+  const MesMatchListTow({
+    Key key,
+    this.joueurone,
+    this.joueurtow,
+    this.clubone,
+    this.clubtowtow,
+    this.imageplayertow,
+    this.imageplayerone,
+    this.competition,
+    this.groupe,
+    this.categorie,
+    this.date,
+    this.lieu,
+    this.tourname,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: Column(
+      children: [
+        ListTile(
+          title: Text(
+            competition,
+          ),
+          subtitle: Text(lieu),
+          trailing: Text(date),
+        ),
+        Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                    padding: EdgeInsets.only(left: 15), child: Text(tourname)),
+                Text(" / "),
+                Text(groupe)
+              ],
+            ),
+            Card(
+              child: Column(
+                children: [
+                  Container(
+                    color: Colors.redAccent,
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(imageplayerone),
+                        radius: 20,
+                      ),
+                      title: Row(
+                        children: [
+                          Text(
+                            joueurone,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          Text("   "),
+                          Text("(aka)"),
+                        ],
+                      ),
+                      subtitle: Text(clubone),
+                    ),
+                  ),
+                  Container(
+                    color: Colors.blueAccent,
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(imageplayertow),
+                        radius: 20,
+                      ),
+                      title: Row(
+                        children: [
+                          Text(
+                            joueurtow,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          Text("   "),
+                          Text("(AO)"),
+                        ],
+                      ),
+                      subtitle: Text(clubtowtow),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        )
+      ],
+    ));
+  }
+}
+
+
+// entre joueur w club set_relation_n_n

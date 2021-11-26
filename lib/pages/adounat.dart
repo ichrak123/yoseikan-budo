@@ -35,7 +35,8 @@ class _AdounatState extends State<Adounat> {
     },
   ];
   Future getData() async {
-    var url = "http://192.168.1.4:80/federationtunisienne/getcompetition.php";
+    var url =
+        "http://192.168.42.178:80/federationtunisienne/getcompetition.php";
     var data = {"cat": widget.categoryname};
     var response = await http.post(url, body: data);
     var responsebody = jsonDecode(response.body);

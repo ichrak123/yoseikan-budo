@@ -1,42 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:yoseikanbudo/pages/joueur/Mesmatchjoueur.dart';
 import 'dart:convert';
 
 import 'package:yoseikanbudo/pages/mesmatchs.dart';
 
-import 'login.dart';
-
 // ignore: camel_case_types
-class unseenNotificationPage extends StatefulWidget {
+class unseenNotificationPagejoueur extends StatefulWidget {
   final usename;
-  const unseenNotificationPage({Key key, this.usename}) : super(key: key);
+  const unseenNotificationPagejoueur({Key key, this.usename}) : super(key: key);
 
   @override
-  _unseenNotificationPageState createState() => _unseenNotificationPageState();
+  _unseenNotificationPagejoueurState createState() =>
+      _unseenNotificationPagejoueurState();
 }
 
 // ignore: camel_case_types
-class _unseenNotificationPageState extends State<unseenNotificationPage> {
+class _unseenNotificationPagejoueurState
+    extends State<unseenNotificationPagejoueur> {
   var username;
-  var nomclub;
+  var club;
   var id;
-  var clubresponsable;
+  var nomprenom;
+  var image;
 
   bool isSignIn = false;
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     username = preferences.getString("username");
-    nomclub = preferences.getString("nom_club");
-    id = preferences.getString("id_club");
-    clubresponsable = preferences.getString("club_responsable");
+    club = preferences.getString("club");
+    id = preferences.getString("joueur_id");
+    nomprenom = preferences.getString("nomprenom");
+    image = preferences.getString("image");
 
     if (username != null) {
       setState(() {
         username = preferences.getString("username");
-        id = preferences.getString("id_club");
-        nomclub = preferences.getString("nom_club");
-        clubresponsable = preferences.getString("club_responsable");
+        id = preferences.getString("joueur_id");
+        club = preferences.getString("club");
+        nomprenom = preferences.getString("nomprenom");
+        image = preferences.getString("image");
 
         isSignIn = true;
       });
@@ -44,10 +48,10 @@ class _unseenNotificationPageState extends State<unseenNotificationPage> {
   }
 
   List allUnseenNotification = [];
-  Future getUnseenNotification() async {
+  Future getUnseenNotificationjoueur() async {
     var data = {"clubname": widget.usename, "clubnametow": widget.usename};
     var url =
-        "http://192.168.1.6:80/federationtunisienne/selectunseennotification.php";
+        "http://192.168.1.4:80/federationtunisienne/selectunseennotificationjoueur.php";
     var response = await http.post(url, body: data);
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
@@ -60,7 +64,7 @@ class _unseenNotificationPageState extends State<unseenNotificationPage> {
 
   Future updateNotification(String id) async {
     var url =
-        "http://192.168.1.6:80/federationtunisienne/updateNtificationseen.php";
+        "http://192.168.1.4:80/federationtunisienne/updateNtificationseen.php";
     var response = await http.post(url, body: {"id_combat": id});
     if (response.statusCode == 200) {
       print("ok");
@@ -70,7 +74,7 @@ class _unseenNotificationPageState extends State<unseenNotificationPage> {
   @override
   void initState() {
     super.initState();
-    getUnseenNotification();
+    getUnseenNotificationjoueur();
     getPref();
   }
 
@@ -94,11 +98,11 @@ class _unseenNotificationPageState extends State<unseenNotificationPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MesMatchs(
+                              builder: (context) => MesMatchsJoueur(
                                     username: id,
                                   )));
                       updateNotification(list['id_combat'])
-                          .whenComplete(() => getUnseenNotification());
+                          .whenComplete(() => getUnseenNotificationjoueur());
                     },
                     child: ListTile(
                         title: Column(

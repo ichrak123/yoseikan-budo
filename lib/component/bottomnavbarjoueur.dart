@@ -2,38 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:yoseikanbudo/pages/apropos.dart';
 import 'package:yoseikanbudo/pages/contact.dart';
 import 'package:yoseikanbudo/pages/home.dart';
+import 'package:yoseikanbudo/pages/joueur/aproposjoueur.dart';
+import 'package:yoseikanbudo/pages/joueur/contactjoueur.dart';
+import 'package:yoseikanbudo/pages/joueur/homejoueur.dart';
 import 'package:yoseikanbudo/pages/startpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({
+class BottomNavBarjoueur extends StatefulWidget {
+  const BottomNavBarjoueur({
     Key key,
   }) : super(key: key);
 
   @override
-  _BottomNavBarState createState() => _BottomNavBarState();
+  _BottomNavBarjoueurState createState() => _BottomNavBarjoueurState();
 }
 
-class _BottomNavBarState extends State<BottomNavBar> {
+class _BottomNavBarjoueurState extends State<BottomNavBarjoueur> {
   var username;
-  var nomclub;
+  var club;
   var id;
-  var clubresponsable;
+  var nomprenom;
+  var image;
 
   bool isSignIn = false;
   getPref() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     username = preferences.getString("username");
-    nomclub = preferences.getString("nom_club");
-    id = preferences.getString("id_club");
-    clubresponsable = preferences.getString("club_responsable");
+    club = preferences.getString("club");
+    id = preferences.getString("joueur_id");
+    nomprenom = preferences.getString("nomprenom");
+    image = preferences.getString("image");
 
     if (username != null) {
       setState(() {
         username = preferences.getString("username");
-        id = preferences.getString("id_club");
-        nomclub = preferences.getString("nom_club");
-        clubresponsable = preferences.getString("club_responsable");
+        id = preferences.getString("joueur_id");
+        club = preferences.getString("club");
+        nomprenom = preferences.getString("nomprenom");
+        image = preferences.getString("image");
 
         isSignIn = true;
       });
@@ -62,27 +68,27 @@ class _BottomNavBarState extends State<BottomNavBar> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Homepage(
+                      builder: (context) => HomeJoueur(
                             usernameone: id,
                           )));
             },
-            isActive: true,
           ),
           BottomNavItem(
             title: "A propos",
             svgScr: "assets/images/infotow.png",
             press: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => About()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Aboutjoueur()));
             },
           ),
           BottomNavItem(
             title: "Contact",
             svgScr: "assets/images/contacttow.png",
             press: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Contact()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Contactjoueur()));
             },
+            isActive: true,
           ),
         ],
       ),

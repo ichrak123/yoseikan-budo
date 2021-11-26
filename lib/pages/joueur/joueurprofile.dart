@@ -13,7 +13,7 @@ class JoueurProfile extends StatefulWidget {
 
 class _JoueurProfileState extends State<JoueurProfile> {
   Future getMonProfile() async {
-    var url = "http://10.0.2.2:80/federationtunisienne/joueurprofile.php";
+    var url = "http://192.168.1.4:80/federationtunisienne/joueurprofile.php";
     var data = {"nomprenom": widget.name};
     var response = await http.post(url, body: data);
     var responsebody = jsonDecode(response.body);
@@ -36,14 +36,13 @@ class _JoueurProfileState extends State<JoueurProfile> {
                         itemBuilder: (context, i) {
                           return ProfileJoueur(
                             nomprenom: snapshot.data[i]['nomprenom'],
-                            club: snapshot.data[i]['club'],
+                            club: snapshot.data[i]['nom_club'],
                             genre: snapshot.data[i]['genre'],
                             categorie: snapshot.data[i]['categorie'],
                             grade: snapshot.data[i]['grade'],
                             poid: snapshot.data[i]['poid'],
                             image:
-                                'http://10.0.2.2:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['image']}',
-                            apropos: snapshot.data[i]['apropos'],
+                                'http://192.168.1.4:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['image']}',
                             adresse: snapshot.data[i]['adresse'],
                             datenaissance: snapshot.data[i]['datenaissance'],
                           );
@@ -63,7 +62,7 @@ class ProfileJoueur extends StatelessWidget {
   final categorie;
   final grade;
   final poid;
-  final apropos;
+
   final adresse;
   final datenaissance;
   const ProfileJoueur(
@@ -75,7 +74,6 @@ class ProfileJoueur extends StatelessWidget {
       this.categorie,
       this.grade,
       this.poid,
-      this.apropos,
       this.adresse,
       this.datenaissance})
       : super(key: key);
@@ -232,7 +230,7 @@ class ProfileJoueur extends StatelessWidget {
                     height: 10.0,
                   ),
                   Text(
-                    apropos,
+                    "",
                     style: TextStyle(
                       fontSize: 22.0,
                       fontStyle: FontStyle.italic,

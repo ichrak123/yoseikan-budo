@@ -9,6 +9,11 @@ class JoueurList extends StatelessWidget {
   final poid;
   final phone;
   final email;
+  final genre;
+  final adresse;
+  final datenaissance;
+  final grade;
+
   const JoueurList(
       {Key key,
       this.avatarUrl,
@@ -17,7 +22,11 @@ class JoueurList extends StatelessWidget {
       this.numlicence,
       this.poid,
       this.phone,
-      this.email})
+      this.email,
+      this.genre,
+      this.adresse,
+      this.datenaissance,
+      this.grade})
       : super(key: key);
 
   @override
@@ -26,14 +35,17 @@ class JoueurList extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) {
           return ProfileContact(
-            avatarurl_d: avatarUrl,
-            name_d: name,
-            category_d: category,
-            numlicence_d: numlicence,
-            poid_d: poid,
-            phone_d: phone,
-            email_d: email,
-          );
+              avatarurl_d: avatarUrl,
+              name_d: name,
+              category_d: category,
+              numlicence_d: numlicence,
+              poid_d: poid,
+              phone_d: phone,
+              email_d: email,
+              genre_d: genre,
+              adresse_d: adresse,
+              datenaissance_d: datenaissance,
+              grade_d: grade);
         }));
       },
       child: ListTile(

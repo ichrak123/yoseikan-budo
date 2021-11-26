@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:yoseikanbudo/component/bottomnavbar.dart';
 
 import 'package:yoseikanbudo/pages/rankingclub.dart';
 
@@ -17,12 +18,12 @@ class MesMatchs extends StatefulWidget {
 class _MesMatchsState extends State<MesMatchs> {
   String somme, sommeone;
   Future getMesMatchTermine() async {
-    var url = "http://192.168.1.4:80/federationtunisienne/getmesmatchs.php";
+    var url = "http://192.168.1.6:80/federationtunisienne/getmesmatchs.php";
     var data = {
       "clubname": widget.username,
       "clubnametow": widget.username,
-      "typeresultat": "Gagné par points",
-      "typeresultattow": "Gagné par Hantei"
+      "typeresultat": "Gagne par Hantei",
+      "typeresultattow": "Gagne par Points"
     };
     var response = await http.post(url, body: data);
     var responsebody = jsonDecode(response.body);
@@ -30,7 +31,7 @@ class _MesMatchsState extends State<MesMatchs> {
   }
 
   Future getMesMatchAvenir() async {
-    var url = "http://192.168.1.4:80/federationtunisienne/progmatch.php";
+    var url = "http://192.168.1.6:80/federationtunisienne/progmatch.php";
     var data = {
       "clubname": widget.username,
       "clubnametow": widget.username,
@@ -46,13 +47,14 @@ class _MesMatchsState extends State<MesMatchs> {
     return DefaultTabController(
         length: 2,
         child: Scaffold(
+            bottomNavigationBar: BottomNavBar(),
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(150.0),
               child: AppBar(
                 elevation: 0,
                 backgroundColor: Colors.white,
                 title: Text(
-                  widget.username,
+                  "Nos matchs",
                   style: TextStyle(color: Colors.black),
                 ),
                 leading: IconButton(
@@ -123,9 +125,9 @@ class _MesMatchsState extends State<MesMatchs> {
                                   tourname: snapshot.data[i]['tour_name'],
                                   score: snapshot.data[i]['scoreone'],
                                   imageplayertow:
-                                      'http://192.168.1.4:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['h']}',
+                                      'http://192.168.1.6:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['h']}',
                                   imageplayerone:
-                                      'http://192.168.1.4:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['i']}',
+                                      'http://192.168.1.6:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['i']}',
                                 );
                               });
                         } else {
@@ -152,9 +154,9 @@ class _MesMatchsState extends State<MesMatchs> {
                                   tourname: snapshot.data[i]['tour_name'],
                                   lieu: snapshot.data[i]['lieu'],
                                   imageplayertow:
-                                      'http://192.168.1.4:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['h']}',
+                                      'http://192.168.1.6:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['h']}',
                                   imageplayerone:
-                                      'http://192.168.1.4:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['i']}',
+                                      'http://192.168.1.6:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['i']}',
                                 );
                               });
                         } else {
@@ -296,9 +298,12 @@ class MeMatchList extends StatelessWidget {
                         backgroundImage: NetworkImage(imageplayerone),
                         radius: 30,
                       ),
-                      Text(
-                        joueurone,
-                        style: TextStyle(fontSize: 18),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(joueurone, style: TextStyle(fontSize: 12)),
+                          Text("(AKA)", style: TextStyle(fontSize: 12)),
+                        ],
                       ),
                       Text(clubone),
                     ],
@@ -338,9 +343,12 @@ class MeMatchList extends StatelessWidget {
                         backgroundImage: NetworkImage(imageplayertow),
                         radius: 30,
                       ),
-                      Text(
-                        joueurtow,
-                        style: TextStyle(fontSize: 18),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(joueurtow, style: TextStyle(fontSize: 12)),
+                          Text("(AO)", style: TextStyle(fontSize: 12)),
+                        ],
                       ),
                       Text(clubtowtow)
                     ],

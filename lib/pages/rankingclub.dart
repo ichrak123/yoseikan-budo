@@ -65,6 +65,7 @@ class _MobileDetailsState extends State<MobileDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Color(0xFF00ACC1),
           title: Text("details"),
         ),
         body: Container(
@@ -87,88 +88,93 @@ class _MobileDetailsState extends State<MobileDetails> {
                 widget.date_d,
               ),
             ),
-            Card(
-                margin: EdgeInsets.only(top: 1, right: 10, left: 10),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(top: 10),
-                      child: Column(
-                        children: [
-                          CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(widget.imageplayerone_d),
-                            radius: 25,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(widget.joueurone_d),
-                              Text("(AKA)"),
-                            ],
-                          ),
-                          Text(widget.clubone_d)
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Container(
-                      child: Text(widget.scoreone_d),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Container(
-                        child: Column(
+            Container(
+              width: double.infinity,
+              child: Card(
+
+                  //  margin: EdgeInsets.only(top: 1, right: 10, left: 10),
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Column(
                       children: [
+                        CircleAvatar(
+                          backgroundImage:
+                              NetworkImage(widget.imageplayerone_d),
+                          radius: 25,
+                        ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("Vainqueur : "),
-                            Text(
-                              widget.resultat_d,
-                            )
+                            Text(widget.joueurone_d),
+                            Text("(AKA)"),
                           ],
                         ),
-                        Text(
-                          widget.typeresult_d,
-                          style: TextStyle(fontSize: 13),
-                        )
+                        Text(widget.clubone_d)
                       ],
-                    )),
-                    SizedBox(
-                      width: 20,
                     ),
-                    Container(
-                      child: Text(widget.scoretow_d),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Container(
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    child: Text(widget.scoreone_d),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Container(
                       child: Column(
+                    children: [
+                      Row(
                         children: [
-                          CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(widget.imageplayertow_d),
-                            radius: 25,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(widget.joueurtow_d),
-                              Text("(OA)"),
-                            ],
-                          ),
-                          Text(widget.clubtowtow_d)
+                          Text("Vainqueur : "),
+                          Text(
+                            widget.resultat_d,
+                          )
                         ],
                       ),
+                      Text(
+                        widget.typeresult_d,
+                        style: TextStyle(fontSize: 13),
+                      )
+                    ],
+                  )),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Container(
+                    child: Text(widget.scoretow_d),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                          backgroundImage:
+                              NetworkImage(widget.imageplayertow_d),
+                          radius: 25,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(widget.joueurtow_d),
+                            Text("(OA)"),
+                          ],
+                        ),
+                        Text(widget.clubtowtow_d)
+                      ],
                     ),
-                  ],
-                )),
+                  ),
+                ],
+              )),
+            ),
             SizedBox(
-              height: 50,
+              height: 20,
             ),
             Container(
                 margin: EdgeInsets.only(right: 15, left: 15),
@@ -176,6 +182,7 @@ class _MobileDetailsState extends State<MobileDetails> {
                   children: [
                     Text(
                       'les points de joueur rouge AKA',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(
@@ -225,7 +232,7 @@ class _MobileDetailsState extends State<MobileDetails> {
                   ],
                 )),
             SizedBox(
-              height: 50,
+              height: 20,
             ),
             Container(
                 margin: EdgeInsets.only(right: 15, left: 15),
@@ -233,6 +240,7 @@ class _MobileDetailsState extends State<MobileDetails> {
                   children: [
                     Text(
                       'les points de joueur bleu OA',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(

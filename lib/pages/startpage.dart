@@ -55,7 +55,13 @@ class Welcome extends StatelessWidget {
                                   MaterialPageRoute(
                                       builder: (context) => LogIn()));
                             },
-                            style: ElevatedButton.styleFrom(side: BorderSide()),
+                            style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(18.0),
+                                        side: BorderSide(width: 1.0)))),
                             child: Text(
                               'Responsable de club',
                               style: TextStyle(fontSize: 20),
@@ -72,7 +78,13 @@ class Welcome extends StatelessWidget {
                                   MaterialPageRoute(
                                       builder: (context) => LoginJoueur()));
                             },
-                            style: ElevatedButton.styleFrom(side: BorderSide()),
+                            style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(18.0),
+                                        side: BorderSide(width: 1.0)))),
                             child: Text(
                               'Joueur',
                               style: TextStyle(fontSize: 20),
@@ -84,7 +96,13 @@ class Welcome extends StatelessWidget {
                         margin: EdgeInsets.all(20),
                         child: ElevatedButton(
                             onPressed: () {},
-                            style: ElevatedButton.styleFrom(side: BorderSide()),
+                            style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(18.0),
+                                        side: BorderSide(width: 1.0)))),
                             child: Text(
                               'Arbitre',
                               style: TextStyle(fontSize: 20),
@@ -96,7 +114,13 @@ class Welcome extends StatelessWidget {
                         margin: EdgeInsets.all(20),
                         child: ElevatedButton(
                             onPressed: () {},
-                            style: ElevatedButton.styleFrom(side: BorderSide()),
+                            style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(18.0),
+                                        side: BorderSide(width: 1.0)))),
                             child: Text(
                               'Coach',
                               style: TextStyle(fontSize: 20),

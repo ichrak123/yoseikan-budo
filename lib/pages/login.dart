@@ -219,13 +219,16 @@ class _LogInState extends State<LogIn> {
           padding: const EdgeInsets.only(top: 15),
           child: Column(
             children: [
+              Container(
+                child: Text(" "),
+              ),
               Image.asset(
                 'assets/images/logo.jpg',
                 width: 90,
                 height: 90,
               ),
               SizedBox(
-                height: 30,
+                height: 20,
               ),
               Text(
                 "Bienvenue",
@@ -306,6 +309,13 @@ class _LogInState extends State<LogIn> {
                               // ignore: deprecated_member_use
                               child: ElevatedButton(
                                 onPressed: signin,
+                                style: ButtonStyle(
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                            side: BorderSide()))),
                                 child: Text(
                                   "Continuer",
                                   style: TextStyle(

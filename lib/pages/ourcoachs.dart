@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yoseikanbudo/component/bottomnavbar.dart';
+import 'package:yoseikanbudo/component/coachlist.dart';
 import 'package:yoseikanbudo/component/complist.dart';
 
 import 'package:http/http.dart' as http;
@@ -7,27 +8,27 @@ import 'dart:convert';
 
 import 'package:yoseikanbudo/component/joueurlist.dart';
 
-class OurPlayers extends StatefulWidget {
+class OurCoachs extends StatefulWidget {
   final clubname;
 
-  const OurPlayers({
+  const OurCoachs({
     Key key,
     this.clubname,
   }) : super(key: key);
 
   @override
-  _OurPlayersState createState() => _OurPlayersState();
+  _OurCoachsState createState() => _OurCoachsState();
 }
 
-class _OurPlayersState extends State<OurPlayers> {
+class _OurCoachsState extends State<OurCoachs> {
   var listsearch = [];
   Future getSearch() async {
-    var url = "http://192.168.1.6:80/federationtunisienne/getsearchplayer.php";
+    var url = "http://192.168.1.4:80/federationtunisienne/getsearchcoach.php";
     var data = {"club": widget.clubname};
     var response = await http.post(url, body: data);
     var responsebody = jsonDecode(response.body);
     for (int i = 0; i < responsebody.length; i++) {
-      listsearch.add(responsebody[i]['nomprenom']);
+      listsearch.add(responsebody[i]['nomcoach']);
     }
     print(listsearch);
   }
@@ -40,17 +41,17 @@ class _OurPlayersState extends State<OurPlayers> {
 
   @override
   Widget build(BuildContext context) {
-    Future nosjoueurs() async {
-      var url = "http://192.168.1.6:80/federationtunisienne/nosjoueurs.php";
+    Future noscoachs() async {
+      var url = "http://192.168.1.4:80/federationtunisienne/noscoachs.php";
       var data = {"club": widget.clubname};
       var response = await http.post(url, body: data);
       var responsebody = jsonDecode(response.body);
       return responsebody;
     }
 
-    Future nosjoueursenattente() async {
+    Future noscoachsenattente() async {
       var url =
-          "http://192.168.1.6:80/federationtunisienne/nosjoueurenattente.php";
+          "http://192.168.1.4:80/federationtunisienne/noscoachsenattente.php";
       var data = {"club": widget.clubname};
       var response = await http.post(url, body: data);
       var responsebody = jsonDecode(response.body);
@@ -63,7 +64,7 @@ class _OurPlayersState extends State<OurPlayers> {
           bottomNavigationBar: BottomNavBar(),
           appBar: AppBar(
             title: Text(
-              "Nos joueurs",
+              "nos coachs",
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -71,10 +72,7 @@ class _OurPlayersState extends State<OurPlayers> {
             actions: [
               IconButton(
                 color: Colors.white,
-                icon: Icon(
-                  Icons.search,
-                  size: 30,
-                ),
+                icon: Icon(Icons.search, size: 30),
                 onPressed: () {
                   showSearch(
                       context: context, delegate: SearchData(list: listsearch));
@@ -108,25 +106,24 @@ class _OurPlayersState extends State<OurPlayers> {
               Container(
                 margin: EdgeInsets.only(top: 15),
                 child: FutureBuilder(
-                    future: nosjoueursenattente(),
+                    future: noscoachsenattente(),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
                         return ListView.builder(
                           itemCount: snapshot.data.length,
                           itemBuilder: (context, i) {
-                            return JoueurList(
-                              name: snapshot.data[i]['nomprenom'],
-                              numlicence: snapshot.data[i]['numerolicence'],
-                              phone: snapshot.data[i]['phone'],
-                              poid: snapshot.data[i]['poid'],
-                              email: snapshot.data[i]['email'],
-                              category: snapshot.data[i]['categorie'],
-                              genre: snapshot.data[i]['genre'],
-                              datenaissance: snapshot.data[i]['datenaissance'],
-                              adresse: snapshot.data[i]['adresse'],
-                              grade: snapshot.data[i]['grade'],
-                              avatarUrl:
-                                  'http://192.168.1.6:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['image']}',
+                            return CoachList(
+                              namecoach: snapshot.data[i]['nomcoach'],
+                              numlicencecoach: snapshot.data[i]
+                                  ['numerolicence'],
+                              phonecoach: snapshot.data[i]['phone'],
+                              emailcoach: snapshot.data[i]['email'],
+                              datenaissancecoach: snapshot.data[i]
+                                  ['datenaissance'],
+                              adressecoach: snapshot.data[i]['adresse'],
+                              gradecoach: snapshot.data[i]['gradecoach'],
+                              avatarUrlcoach:
+                                  'http://192.168.1.4:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['image']}',
                             );
                           },
                         );
@@ -138,25 +135,24 @@ class _OurPlayersState extends State<OurPlayers> {
               Container(
                 margin: EdgeInsets.only(top: 15),
                 child: FutureBuilder(
-                    future: nosjoueurs(),
+                    future: noscoachs(),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       if (snapshot.hasData) {
                         return ListView.builder(
                           itemCount: snapshot.data.length,
                           itemBuilder: (context, i) {
-                            return JoueurList(
-                              name: snapshot.data[i]['nomprenom'],
-                              numlicence: snapshot.data[i]['numerolicence'],
-                              phone: snapshot.data[i]['phone'],
-                              poid: snapshot.data[i]['poid'],
-                              email: snapshot.data[i]['email'],
-                              category: snapshot.data[i]['categorie'],
-                              genre: snapshot.data[i]['genre'],
-                              datenaissance: snapshot.data[i]['datenaissance'],
-                              adresse: snapshot.data[i]['adresse'],
-                              grade: snapshot.data[i]['grade'],
-                              avatarUrl:
-                                  'http://192.168.1.6:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['image']}',
+                            return CoachList(
+                              namecoach: snapshot.data[i]['nomcoach'],
+                              numlicencecoach: snapshot.data[i]
+                                  ['numerolicence'],
+                              phonecoach: snapshot.data[i]['phone'],
+                              emailcoach: snapshot.data[i]['email'],
+                              datenaissancecoach: snapshot.data[i]
+                                  ['datenaissance'],
+                              adressecoach: snapshot.data[i]['adresse'],
+                              gradecoach: snapshot.data[i]['gradecoach'],
+                              avatarUrlcoach:
+                                  'http://192.168.1.4:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['image']}',
                             );
                           },
                         );
@@ -174,8 +170,8 @@ class _OurPlayersState extends State<OurPlayers> {
 class SearchData extends SearchDelegate<String> {
   List<dynamic> list;
   SearchData({this.list});
-  Future Filter() async {
-    var url = "http://192.168.1.6:80/federationtunisienne/filterplayer.php";
+  Future Filtercoach() async {
+    var url = "http://192.168.1.4:80/federationtunisienne/filtercoach.php";
     var data = {"searchcompetition": query};
     var response = await http.post(url, body: data);
     var responsebody = jsonDecode(response.body);
@@ -209,25 +205,22 @@ class SearchData extends SearchDelegate<String> {
   Widget buildResults(BuildContext context) {
     // result searchs
     return FutureBuilder(
-        future: Filter(),
+        future: Filtercoach(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, i) {
-                  return JoueurList(
-                    name: snapshot.data[i]['nomprenom'],
-                    category: snapshot.data[i]['categorie'],
-                    numlicence: snapshot.data[i]['numerolicence'],
-                    phone: snapshot.data[i]['phone'],
-                    poid: snapshot.data[i]['poid'],
-                    email: snapshot.data[i]['email'],
-                    genre: snapshot.data[i]['genre'],
-                    datenaissance: snapshot.data[i]['datenaissance'],
-                    adresse: snapshot.data[i]['adresse'],
-                    grade: snapshot.data[i]['grade'],
-                    avatarUrl:
-                        'http://192.168.1.6:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['image']}',
+                  return CoachList(
+                    namecoach: snapshot.data[i]['nomcoach'],
+                    numlicencecoach: snapshot.data[i]['numerolicence'],
+                    phonecoach: snapshot.data[i]['phone'],
+                    emailcoach: snapshot.data[i]['email'],
+                    datenaissancecoach: snapshot.data[i]['datenaissance'],
+                    adressecoach: snapshot.data[i]['adresse'],
+                    gradecoach: snapshot.data[i]['gradecoach'],
+                    avatarUrlcoach:
+                        'http://192.168.1.4:80/federationtunisienne/assets/uploads/files/${snapshot.data[i]['image']}',
                   );
                 });
           } else {

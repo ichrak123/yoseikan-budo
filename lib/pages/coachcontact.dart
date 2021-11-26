@@ -3,25 +3,23 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:email_launcher/email_launcher.dart';
 
-class ProfileContact extends StatefulWidget {
+class CoachContact extends StatefulWidget {
   final name_d;
   final avatarurl_d;
-  final category_d;
+
   final numlicence_d;
-  final poid_d;
+
   final phone_d;
   final email_d;
   final genre_d;
   final adresse_d;
   final datenaissance_d;
   final grade_d;
-  const ProfileContact(
+  const CoachContact(
       {Key key,
       this.name_d,
       this.avatarurl_d,
-      this.category_d,
       this.numlicence_d,
-      this.poid_d,
       this.phone_d,
       this.email_d,
       this.genre_d,
@@ -31,22 +29,22 @@ class ProfileContact extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ProfileContactState createState() => _ProfileContactState();
+  _CoachContactState createState() => _CoachContactState();
 }
 
-class _ProfileContactState extends State<ProfileContact> {
+class _CoachContactState extends State<CoachContact> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFF00ACC1),
           title: Text(
             "joueur contact",
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
             ),
           ),
           elevation: 0,
+          backgroundColor: Color(0xFFE0F2F1),
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -60,8 +58,10 @@ class _ProfileContactState extends State<ProfileContact> {
             children: <Widget>[
               Container(
                   decoration: BoxDecoration(
-                    color: Color(0xFF00ACC1),
-                  ),
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [Colors.redAccent, Colors.pinkAccent])),
                   child: Container(
                     width: double.infinity,
                     height: 350.0,
@@ -119,57 +119,9 @@ class _ProfileContactState extends State<ProfileContact> {
                                     child: Column(
                                       children: <Widget>[
                                         Text(
-                                          "categorie",
-                                          style: TextStyle(
-                                            color: Color(0xFF00ACC1),
-                                            fontSize: 22.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        Text(
-                                          widget.category_d,
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            color: Colors.pinkAccent,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: <Widget>[
-                                        Text(
-                                          "poid",
-                                          style: TextStyle(
-                                            color: Color(0xFF00ACC1),
-                                            fontSize: 22.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 5.0,
-                                        ),
-                                        Text(
-                                          widget.poid_d,
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            color: Colors.pinkAccent,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: <Widget>[
-                                        Text(
                                           "grade",
                                           style: TextStyle(
-                                            color: Color(0xFF00ACC1),
+                                            color: Colors.redAccent,
                                             fontSize: 22.0,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -179,6 +131,30 @@ class _ProfileContactState extends State<ProfileContact> {
                                         ),
                                         Text(
                                           widget.grade_d,
+                                          style: TextStyle(
+                                            fontSize: 20.0,
+                                            color: Colors.pinkAccent,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      children: <Widget>[
+                                        Text(
+                                          "Licence",
+                                          style: TextStyle(
+                                            color: Colors.redAccent,
+                                            fontSize: 22.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 5.0,
+                                        ),
+                                        Text(
+                                          widget.numlicence_d,
                                           style: TextStyle(
                                             fontSize: 20.0,
                                             color: Colors.pinkAccent,
@@ -214,7 +190,6 @@ class _ProfileContactState extends State<ProfileContact> {
                         height: 10.0,
                       ),
                       Text(
-                        'Licence: ${widget.numlicence_d}.\n'
                         'Adresse : ${widget.adresse_d}.\n'
                         'Date de naissance : ${widget.datenaissance_d}',
                         style: TextStyle(

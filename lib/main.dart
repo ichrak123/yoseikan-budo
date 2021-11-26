@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:yoseikanbudo/pages/adounat.dart';
+import 'package:yoseikanbudo/pages/apropos.dart';
 import 'package:yoseikanbudo/pages/clubprofile.dart';
+import 'package:yoseikanbudo/pages/contact.dart';
 import 'package:yoseikanbudo/pages/demandelicence.dart';
 import 'package:yoseikanbudo/pages/home.dart';
 import 'package:yoseikanbudo/pages/joueur/homejoueur.dart';
@@ -41,7 +43,7 @@ class _MyAppState extends State<MyApp> {
           // is not restarted.
           primarySwatch: Colors.blue,
         ),
-        home: LogIn(),
+        home: Welcome(),
         routes: {
           'Competitions': (context) {
             return Homepage();

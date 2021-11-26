@@ -45,7 +45,11 @@ class CompList extends StatelessWidget {
                         color: Color(0xFF263238),
                       ),
                     ),
-                    Text(poid, style: TextStyle(fontSize: 15))
+                    Text(poid, style: TextStyle(fontSize: 15)),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text(sexe, style: TextStyle(fontSize: 15)),
                   ],
                 ),
                 trailing: Text(date),

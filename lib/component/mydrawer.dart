@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yoseikanbudo/pages/clubprofile.dart';
 import 'package:yoseikanbudo/pages/home.dart';
 import 'package:yoseikanbudo/pages/mesmatchs.dart';
+import 'package:yoseikanbudo/pages/ourcoachs.dart';
 import 'package:yoseikanbudo/pages/ourplayers.dart';
 import 'package:yoseikanbudo/pages/unseenNotificationPage.dart';
 
@@ -65,15 +66,7 @@ class _DrawerMenuState extends State<DrawerMenu> {
           currentAccountPicture: CircleAvatar(
             backgroundImage: ExactAssetImage('assets/images/logo.jpg'),
           ),
-          otherAccountsPictures: <Widget>[
-            CircleAvatar(
-              child: Text('A'),
-              backgroundColor: Colors.white60,
-            ),
-            CircleAvatar(
-              child: Text('R'),
-            ),
-          ],
+          otherAccountsPictures: <Widget>[],
           onDetailsPressed: () {},
           decoration: BoxDecoration(
               image: DecorationImage(
@@ -90,78 +83,6 @@ class _DrawerMenuState extends State<DrawerMenu> {
                 onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => ClubProfile()));
-                },
-              )
-            : SizedBox(
-                height: 0,
-              ),
-        isSignIn
-            ? ListTile(
-                title: Text(
-                  'Nos Matchs ',
-                  style: TextStyle(fontSize: 17),
-                ),
-                leading: Icon(Icons.sports_kabaddi),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MesMatchs(
-                                username: id,
-                              )));
-                },
-              )
-            : SizedBox(
-                height: 0,
-              ),
-        Divider(),
-        isSignIn
-            ? ListTile(
-                title: Text(
-                  'demander licence',
-                  style: TextStyle(fontSize: 17),
-                ),
-                leading: Icon(Icons.add),
-                onTap: () {
-                  Navigator.of(context).pushNamed('demandelicence');
-                },
-              )
-            : SizedBox(
-                height: 0,
-              ),
-        isSignIn
-            ? ListTile(
-                title: Text(
-                  'Nos Joueurs',
-                  style: TextStyle(fontSize: 17),
-                ),
-                leading: Icon(Icons.people),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => OurPlayers(
-                                clubname: id,
-                              )));
-                },
-              )
-            : SizedBox(
-                height: 0,
-              ),
-        isSignIn
-            ? ListTile(
-                title: Text(
-                  'Nos coachs',
-                  style: TextStyle(fontSize: 17),
-                ),
-                leading: Icon(Icons.people_alt),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Homepage(
-                                usernameone: id,
-                              )));
                 },
               )
             : SizedBox(
